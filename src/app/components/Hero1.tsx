@@ -1,62 +1,34 @@
 import Image from "next/image";
-import Image1 from "../public/Mask Group.png"; 
-import Image2 from "../public/Image-living room.png"; 
-import Image3 from "../public/bedroom.png"; 
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-export default function BrowseRange() {
-  return (
-    <div className="py-12 bg-gray-100">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-800">Browse The Range</h2>
-        <p className="text-gray-600 mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
+export default async function Hero1() {
+  const products: Product[] = await client.fetch(`*[_type == "product"][0..2]`); // 3 products fetch
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
-        {/* Dining Card */}
-        <div className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-lg">
-          <Image
-            src={Image1}
-            alt="Dining"
-            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div className="text-center py-4">
-            <h3 className="text-lg font-semibold text-gray-800">Dining</h3>
+  return (  
+    <div className="w-full h-screen relative">
+      {/* Background Section */}
+      <h1 className="text-4xl font-bold mb-4 text-center mt-10">Browse The Range</h1>
+      <p className="text-lg text-[#666666] mb-8 text-center">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-10">
+        {products.map((product) => (
+          <div key={product._id} className="bg-gray-100 p-6 rounded-lg shadow-md">
+            <Image 
+              src={urlFor(product.productImage).url()}  
+              alt={product.tittle || "Product Image"} 
+              className="w-full mb-4" 
+              width={500} 
+              height={500} 
+            />
+            <h2 className="text-xl text-[#333333] font-semibold mb-2 text-center">
+              {product.tittle || "Product Name"}
+            </h2>
           </div>
-        </div>
-
-        {/* Living Card */}
-        <div className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-lg">
-          <Image
-            src={Image2}
-            alt="Living"
-            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div className="text-center py-4">
-            <h3 className="text-lg font-semibold text-gray-800">Living</h3>
-          </div>
-        </div>
-
-        {/* Bedroom Card */}
-        <div className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-lg">
-          <Image
-            src={Image3}
-            alt="Bedroom"
-            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          <div className="text-center py-4">
-            <h3 className="text-lg font-semibold text-gray-800">Bedroom</h3>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-

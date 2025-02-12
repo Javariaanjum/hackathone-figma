@@ -1,38 +1,50 @@
 import Image from "next/image";
-import backgroundImg from "../public/scandinavian-interior-mockup-wall-decal-background 1.png"; // Replace with your image path
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-export default function CustomCard() {
-  return (
-    <div className="relative h-screen w-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-10">
+export default async function Hero() {
+  const products:Product[] = await client.fetch(`*[_type == "product"]`);
+
+  return (  
+    <div className="w-full h-screen relative">
+      {/* Background Section */}
+      {products.map((product) => (
         <Image
-          src={backgroundImg}
-          alt="Background"
-          layout="fill"
-          objectFit="cover"
+          key={product._id}
+          src={urlFor(product.productImage).url()}
+          alt={product.tittle || "Product Image"}
+          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
         />
-      </div>
-
-      {/* Card */}
-      <div className="bg-white w-[70%] sm:w-[50%] md:w-[40%] lg:w-[35%] xl:w-[30%] shadow-lg rounded-xl p-8 mt-[100px]  ml-[280px]">
-        <p className="text-[#111111] text-sm font-bold uppercase ">
-          New Arrival
-        </p
-        <h1 className="" text-3xl md:text-4xl  font-bold mt-2 mb-4 leading-snug">
-          Discover Our New Collection
-        </h1>
-        <p className="text-[#C7A650] text-base mb-6 font-bold">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
-          tellus, luctus nec ullamcorper mattis.
-        </p>
-        <button className="bg-[#C7A650] text-white py-3 px-9 shadow-md text-sm uppercase font-semibold hover:bg-[#b89144]">
-          Buy Now
-        </button>
+      ))}
+      Content Section 
+      <div className="absolute inset-0 flex items-center justify-end pr-20 mr-24 mt-28">
+        <div className="bg-white w-[500px] p-8 rounded-lg shadow-lg">
+          <span className="block text-sm font-semibold text-black tracking-wider uppercase mb-2">
+            New Arrival
+          </span>
+          <h1 className="text-6xl font-bold text-[#b88e2f] leading-tight mb-4">
+             Discover Our New Collection
+          </h1>
+          <p className="text-black mb-6">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.
+          </p>
+          <button className="bg-[#b88e2f] text-white py-3 px-8 rounded-md text-lg font-bold uppercase hover:bg-[#9a761e]">
+            Buy Now
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+   }
 
 
 
+
+
+
+
+
+ 
+ 
