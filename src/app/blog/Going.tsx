@@ -177,6 +177,7 @@ export default function Going(){
     </div>
   </div>
 </div>
+
 </div>
   )
 }
